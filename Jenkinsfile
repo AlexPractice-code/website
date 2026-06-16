@@ -3,7 +3,7 @@ pipeline {
     agent { label 'build-agent' }
 
     environment {
-        IMAGE_NAME = "YOUR_DOCKERHUB_USERNAME/webapp:latest"
+        IMAGE_NAME = "anmolnegi/webapp:latest"
     }
 
     stages {
