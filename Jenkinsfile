@@ -36,8 +36,8 @@ pipeline {
             steps {
                 sh '''
                 ansible-playbook \
-                -i /home/ubuntu/ansible/inventory \
-                /home/ubuntu/ansible/deploy.yml
+                -i /home/ubuntu/inventory \
+                /home/ubuntu/deploy.yml
                 '''
             }
         }
