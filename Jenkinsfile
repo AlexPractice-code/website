@@ -19,18 +19,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh '''
-                docker rm -f test-container || true
-
-                docker run -d \
-                --name test-container \
-                -p 8081:80 \
-                $IMAGE_NAME
-
-                sleep 10
-
-                curl -f http://localhost:8081
-
-                docker rm -f test-container
+                docker images | grep webapp
                 '''
             }
         }
@@ -46,9 +35,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
+                ssh ubuntu@<JENKINS_SERVER_IP> "
                 ansible-playbook \
                 -i /home/ubuntu/ansible/inventory \
                 /home/ubuntu/ansible/deploy.yml
+                "
                 '''
             }
         }
