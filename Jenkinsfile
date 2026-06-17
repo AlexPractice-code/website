@@ -35,7 +35,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                ssh ubuntu@<JENKINS_SERVER_IP> "
+                ssh ubuntu@3.108.63.235  "
                 ansible-playbook \
                 -i /home/ubuntu/ansible/inventory \
                 /home/ubuntu/ansible/deploy.yml
