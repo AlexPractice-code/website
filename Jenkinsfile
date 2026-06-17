@@ -39,14 +39,13 @@ pipeline {
         }
 
         stage('Deploy') {
-
             agent { label 'Built-In Node' }
 
             steps {
                 sh '''
                 ansible-playbook \
-                -i /home/ubuntu/ansible/inventory \
-                /home/ubuntu/ansible/deploy.yml
+                -i /var/lib/jenkins/ansible/inventory \
+                /var/lib/jenkins/ansible/deploy.yml
                 '''
             }
         }
