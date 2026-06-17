@@ -1,6 +1,6 @@
 pipeline {
 
-    agent none
+    agent { label 'build-agent' }
 
     environment {
         IMAGE_NAME = "anmolnegi/webapp:latest"
@@ -9,7 +9,6 @@ pipeline {
     stages {
 
         stage('Build') {
-            agent { label 'build-agent' }
             steps {
                 sh '''
                 docker build -t $IMAGE_NAME .
@@ -18,16 +17,25 @@ pipeline {
         }
 
         stage('Test') {
-            agent { label 'build-agent' }
             steps {
                 sh '''
-                docker images | grep webapp
+                docker rm -f test-container || true
+
+                docker run -d \
+                --name test-container \
+                -p 8081:80 \
+                $IMAGE_NAME
+
+                sleep 10
+
+                curl -f http://localhost:8081
+
+                docker rm -f test-container
                 '''
             }
         }
 
         stage('Push Image') {
-            agent { label 'build-agent' }
             steps {
                 sh '''
                 docker push $IMAGE_NAME
@@ -36,7 +44,11 @@ pipeline {
         }
 
         stage('Deploy') {
-            agent any
+
+            when {
+                branch 'master'
+            }
+
             steps {
                 sh '''
                 ansible-playbook \
