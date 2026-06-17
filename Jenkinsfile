@@ -44,11 +44,6 @@ pipeline {
         }
 
         stage('Deploy') {
-
-            when {
-                branch 'master'
-            }
-
             steps {
                 sh '''
                 ansible-playbook \
