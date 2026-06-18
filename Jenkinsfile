@@ -39,7 +39,7 @@ pipeline {
         }
 
         stage('Deploy') {
-            agent { label 'Built-In Node' }
+            agent any
 
             steps {
                 sh '''
